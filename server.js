@@ -4,11 +4,14 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const taskRoutes = require('./src/routes/taskRoutes');
+const { errorHandler } = require('./src/middleware/errorMiddleware');
+const { logger } = require('./src/middleware/loggerMiddleware');
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(logger); // Log incoming requests
 
 // Connect to MongoDB
 mongoose
@@ -18,6 +21,9 @@ mongoose
 
 // Routes
 app.use('/api/tasks', taskRoutes);
+
+// Error handler
+app.use(errorHandler);
 
 // Start the server
 const PORT = process.env.PORT || 8000;
