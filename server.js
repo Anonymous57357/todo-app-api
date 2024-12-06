@@ -1,9 +1,10 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
-// Initialize Express app
+const taskRoutes = require('./src/routes/taskRoutes');
+
 const app = express();
 
 // Middleware
@@ -15,10 +16,8 @@ mongoose
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log('Database connection error:', err));
 
-// Basic route
-app.get('/', (req, res) => {
-  res.send('Welcome to the To-Do App API!');
-});
+// Routes
+app.use('/api/tasks', taskRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 8000;
